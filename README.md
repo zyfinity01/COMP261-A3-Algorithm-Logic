@@ -70,9 +70,9 @@ For each method in FordFulkerson.java a return type has been specified in the sk
 Do not need to be changed(but can be). Some updations/deletions have been made to these files since assignment 2 to sketch assignment 3(important changes are listed)
 
 - Edge.java
-- Graph.java: this has been updated to include a function to return a node given its int ID.
+- Graph.java: this has been updated to include a method that return a node given its int ID.
 - Main.java
 - MapView.fxml
-- Node.java: this has been updated to find neighbours of node.
+- Node.java: this has been updated to include a function that returns neighbours of a given node.
 - Parser.java
 - Projection.java
