@@ -58,3 +58,20 @@ Your implementation should provide the maximum flow in terms of _number of vehic
 **2. Sample graph with Min-cut capacity.**
 
 ![Min-cut](/images/Min-cut.png)
+
+### File description
+Main parts of Assignment 3 needing updates: 
+
+FordFulkerson.java - This has the TODO tasks for finding the maximum flow, augmentation paths and min-cut.
+GraphController.java - This has TODOs for displaying the results.
+
+For each method in FordFulkerson.java a return type has been specified in the skeleton code. You can change the return type if you wish to - as long as the output is in the same format as is expected.
+
+Do not need to be changed(but can be). Some updations/deletions have been made to these files since assignment 2 to sketch assignment 3(important changes are listed)
+Edge.java
+Graph.java: this has been updated to include a function to return a node given its int ID.
+Main.java
+MapView.fxml
+Node.java: this has been updated to find neighbours of node.
+Parser.java
+Projection.java
