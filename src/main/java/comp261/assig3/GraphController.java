@@ -57,6 +57,14 @@ public class GraphController {
     @FXML
     private Button right;
 
+    // added for car/moped/bus
+    @FXML
+    private CheckBox car_ch;
+    @FXML
+    private CheckBox moped_ch;
+    @FXML
+    private CheckBox bus_ch;
+
     @FXML
     private CheckBox edgeWeight_ch;
     @FXML
@@ -121,6 +129,7 @@ public class GraphController {
         mapCanvas.heightProperty().bind(vbox.heightProperty());
         nodeNames_ch.setSelected(false);
         edgeWeight_ch.setSelected(false);
+        bus_ch.setSelected(false);
     }
 
     // The listener for expanding the window
@@ -153,6 +162,7 @@ public class GraphController {
         fileChooser.setTitle("Open Edge File");
         File edgeFile = fileChooser.showOpenDialog(stage);
         graph = new Graph(nodeFile, edgeFile);
+        Main.graph = graph; //loads the graph, forgotten by issuer
         drawGraph(graph);
         event.consume();
     }
@@ -230,14 +240,39 @@ public class GraphController {
         event.consume();
     }
 
+
+
     // handle finding maximum network flow
     public void handleNetworkFlow(ActionEvent event) {
+        for (Edge edge : graph.getEdgeList()) {
+
+            if (car_ch.isSelected()) {
+
+                edge.setVehicleType("car");
+
+
+            } else if (moped_ch.isSelected()) {
+
+                edge.setVehicleType("moped");
+   
+
+            } else {  //if(bus_ch.isSelected())
+
+                edge.setVehicleType("bus");
+
+
+            }   
+
+
+        }
+
+
         //s = node 0; t = last node in the node list
         double nflowEdges;
         nflowEdges = FordFulkerson.calcMaxflows(graph, graph.getNodeList().get(0),
                 graph.getNodeList().get(graph.getNodeList().size() - 1));
         tripText.appendText(" Source: " + graph.getNodeList().get(0).getName() + " Sink: "
-                + graph.getNodeList().get(graph.getNodeList().size() - 1).getName() + " Max Flow: " + nflowEdges);
+                + graph.getNodeList().get(graph.getNodeList().size() - 1).getName() + " Max Flow: " + nflowEdges + "\n");
         drawGraph(graph);
         event.consume();
     }
@@ -248,7 +283,14 @@ public class GraphController {
         ArrayList<Pair<ArrayList<Node>, Double>> aPaths = new ArrayList<Pair<ArrayList<Node>, Double>>();
         aPaths = FordFulkerson.getAugmentationPaths();
         if (aPaths != null) {
-            // TODO: Display all augmentation paths
+            for(Pair<ArrayList<Node>, Double> pair: aPaths){
+                tripText.appendText("AP: ");
+                for(Node node : pair.getKey()){
+                    tripText.appendText(node.getId() +" ");
+                }
+                tripText.appendText("Flow Value:" + pair.getValue() + " || ");
+            }
+            tripText.appendText("\n");
         } else {
             tripText.appendText("\nNo augmentation paths found");
         }
@@ -278,8 +320,22 @@ public class GraphController {
         Pair<Pair<HashSet<Node>, HashSet<Node>>, Double> minCutwithSets = FordFulkerson.minCut_s_t(graph,
                 graph.getNodeList().get(0), graph.getNodeList().get(graph.getNodeList().size() - 1));
         if (minCutwithSets != null) {
-            //TODO: Display the min-cut sets and the corresponding capacity
+            String a = "";
+            String b = "";
 
+            for (Node source : minCutwithSets.getKey().getKey()) {
+                a += source.getName() + " ";
+            }
+
+            for (Node sink : minCutwithSets.getKey().getValue()) {
+                b += sink.getName() + " ";
+            }
+
+            tripText.appendText("Source: " + a);
+
+            tripText.appendText("Sink: " + b + " ::: ");
+
+            tripText.appendText("S-T cut: " + minCutwithSets.getValue() + "\n");
         } else {
             tripText.appendText("\nNo min-cut found");
         }

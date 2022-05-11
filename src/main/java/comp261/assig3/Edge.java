@@ -16,6 +16,10 @@ public class Edge {
 
     private double weight;
 
+    private String vehicleType;
+
+    private double originalWeight;
+
     // Node constructor
     public Edge(Node from, Node to, double weight) {
         this.from = from;
@@ -23,6 +27,7 @@ public class Edge {
         this.to = to;
         this.toId = to.getId();
         this.weight = weight;
+        this.originalWeight = weight;
     }
 
     // Nodes without the weight assume a weight of 1
@@ -58,6 +63,20 @@ public class Edge {
 
     public double getWeight() {
         return weight;
+    }
+
+    public String getVehicleType(){
+        return vehicleType;
+    }
+
+    // setter for completion
+    
+    public void setWeight(double weightMultiplier){
+        this.weight = originalWeight*weightMultiplier;
+    }
+
+    public void setVehicleType(String s){
+        this.vehicleType = s;
     }
 
 }
